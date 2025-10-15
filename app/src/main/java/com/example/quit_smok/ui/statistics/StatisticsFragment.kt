@@ -9,6 +9,7 @@ import com.example.quit_smok.MainActivity
 import com.example.quit_smok.R
 import com.example.quit_smok.databinding.FragmentStatisticsBinding
 import java.time.LocalDate
+import java.util.Locale  // Добавьте этот импорт для Locale.US
 
 class StatisticsFragment : Fragment() {
 
@@ -40,9 +41,10 @@ class StatisticsFragment : Fragment() {
         binding.tvCigsCurrent.text = if (yesterdayCigs > 0) yesterdayCigs.toString() else "-"
         binding.tvCigsProgress.text = cigProgress.toString()
 
-        binding.tvSpendInitial.text = initialSpend.toString()
-        binding.tvSpendCurrent.text = if (yesterdayCigs > 0) yesterdaySpend.toString() else "-"
-        binding.tvSpendProgress.text = spendProgress.toString()
+        // Исправление: Форматируем с Locale.US (точка как разделитель) и устанавливаем строку напрямую
+        binding.tvSpendInitial.text = String.format(Locale.US, "%.2f", initialSpend)
+        binding.tvSpendCurrent.text = if (yesterdayCigs > 0) String.format(Locale.US, "%.2f", yesterdaySpend) else "-"
+        binding.tvSpendProgress.text = if (yesterdayCigs > 0) String.format(Locale.US, "%.2f", spendProgress) else "-"
 
         return root
     }
