@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Тема приложения -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Стили для кнопок диалогов -->
+    <style name="AlertDialogButtonRed" parent="Widget.AppCompat.Button">
+        <item name="android:backgroundTint">#FF0000</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="AlertDialogButtonGreen" parent="Widget.AppCompat.Button">
+        <item name="android:backgroundTint">#00FF00</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+</resources>

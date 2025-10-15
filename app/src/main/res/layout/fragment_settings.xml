@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Во сколько Вы выкуриваете первую сигарету? (Час:мин)" />
+
+        <EditText
+            android:id="@+id/et_first_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="8:00"
+            android:inputType="time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Во сколько последнюю? (Час:мин)" />
+
+        <EditText
+            android:id="@+id/et_last_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="22:00"
+            android:inputType="time" />
+
+        <TextView
+            android:id="@+id/tv_awake_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Вы бодрствуете (результат вычисления Часов и минут)" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сколько сигарет за это время Вы выкуриваете?" />
+
+        <EditText
+            android:id="@+id/et_cigs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/tv_interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Вы курите каждые (результат вычисления) минут" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="На сколько увеличивать интервал между перекурами в минутах?" />
+
+        <EditText
+            android:id="@+id/et_increase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сколько стоит пачка сигарет?" />
+
+        <EditText
+            android:id="@+id/et_pack_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:id="@+id/tv_cig_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Одна сигарета стоит (результат вычисления)" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сохранить" />
+
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Начать сначала" />
+
+    </LinearLayout>
+</ScrollView>

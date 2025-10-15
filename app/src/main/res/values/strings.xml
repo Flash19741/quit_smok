@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Quit Smok</string>
+    <string name="timer">Timer</string>
+    <string name="settings">Settings</string>
+    <string name="statistics">Statistics</string>
+</resources>

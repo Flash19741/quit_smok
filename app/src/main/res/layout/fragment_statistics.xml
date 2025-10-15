@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:padding="16dp">
+
+        <TableRow>
+            <TextView
+                android:text="" />
+            <TextView
+                android:text="Сначала"
+                android:gravity="center" />
+            <TextView
+                android:text="Сейчас"
+                android:gravity="center" />
+            <TextView
+                android:text="Прогресс"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="Сигарет в день" />
+            <TextView
+                android:id="@+id/tv_cigs_initial"
+                android:gravity="center" />
+            <TextView
+                android:id="@+id/tv_cigs_current"
+                android:gravity="center" />
+            <TextView
+                android:id="@+id/tv_cigs_progress"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="Траты на сигареты" />
+            <TextView
+                android:id="@+id/tv_spend_initial"
+                android:gravity="center" />
+            <TextView
+                android:id="@+id/tv_spend_current"
+                android:gravity="center" />
+            <TextView
+                android:id="@+id/tv_spend_progress"
+                android:gravity="center" />
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>
