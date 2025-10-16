@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="light_red">#FD9595</color> <!-- Светло-красный -->
+    <color name="light_green">#65FA65</color> <!-- Светло-зелёный -->
 </resources>

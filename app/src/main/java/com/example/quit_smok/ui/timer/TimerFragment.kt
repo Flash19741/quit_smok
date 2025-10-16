@@ -4,15 +4,18 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.quit_smok.MainActivity
+import com.example.quit_smok.R
 import com.example.quit_smok.databinding.FragmentTimerBinding
 import java.time.Instant
-import java.time.LocalTime  // Добавьте эту строку
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -87,9 +90,15 @@ class TimerFragment : Fragment() {
             val minutesLeft = (timeLeftMs / 1000 / 60).toInt()
             val secondsLeft = (timeLeftMs / 1000 % 60).toInt()
             binding.tvTimer.text = "Вы можете покурить через $minutesLeft мин $secondsLeft сек"
+
+            // Светло-красный фон (нельзя курить)
+            binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_red))
         } else {
             binding.tvNextSmoke.text = "Время следующего перекура: --"
             binding.tvTimer.text = "Вы можете покурить сейчас"
+
+            // Светло-зелёный фон (можно курить)
+            binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_green))
         }
     }
 
