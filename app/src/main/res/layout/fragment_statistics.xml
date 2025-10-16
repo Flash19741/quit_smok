@@ -3,53 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="*"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <TableRow>
-            <TextView
-                android:text="" />
-            <TextView
-                android:text="Сначала"
-                android:gravity="center" />
-            <TextView
-                android:text="Сейчас"
-                android:gravity="center" />
-            <TextView
-                android:text="Прогресс"
-                android:gravity="center" />
-        </TableRow>
+        <!-- 1. Вы выкуривали (значение из настроек) сигарет в сутки -->
+        <TextView
+            android:id="@+id/tv_initial_cigs_per_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
 
-        <TableRow>
-            <TextView
-                android:text="Сигарет в день" />
-            <TextView
-                android:id="@+id/tv_cigs_initial"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/tv_cigs_current"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/tv_cigs_progress"
-                android:gravity="center" />
-        </TableRow>
+        <!-- 2. Вчера вы выкурили (значение сколько сигарет скурил вчера) сигарет -->
+        <TextView
+            android:id="@+id/tv_yesterday_cigs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
 
-        <TableRow>
-            <TextView
-                android:text="Траты на сигареты" />
-            <TextView
-                android:id="@+id/tv_spend_initial"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/tv_spend_current"
-                android:gravity="center" />
-            <TextView
-                android:id="@+id/tv_spend_progress"
-                android:gravity="center" />
-        </TableRow>
+        <!-- 3. Сегодня вы выкурили (значение сколько сигарет скурил сегодня) сигарет -->
+        <TextView
+            android:id="@+id/tv_today_cigs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
 
-    </TableLayout>
+        <!-- 4. Вы тратили (значение траты на сигареты при запуске приложения) -->
+        <TextView
+            android:id="@+id/tv_initial_spend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 5. Вчера вы потратили (значение траты на сигареты вчера) -->
+        <TextView
+            android:id="@+id/tv_yesterday_spend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 6. Сегодня вы потратили (значение траты на сигареты сегодня) -->
+        <TextView
+            android:id="@+id/tv_today_spend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 7. Сначала интервал между перекурами был (значение интервал между перекурами при запуске приложения) минут -->
+        <TextView
+            android:id="@+id/tv_initial_interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 8. Вчера интервал между перекурами был (значение интервал между перекурами вчера) минут -->
+        <TextView
+            android:id="@+id/tv_yesterday_interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 </ScrollView>
