@@ -1,22 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
+    <!-- Текст для времени последнего перекура -->
+    <TextView
+        android:id="@+id/tv_last_smoke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Время последнего перекура: --"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Текст для времени следующего перекура -->
+    <TextView
+        android:id="@+id/tv_next_smoke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Время следующего перекура: --"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_last_smoke"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Существующий текст "Вы можете покурить через..." -->
     <TextView
         android:id="@+id/tv_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="Вы можете покурить через..." />
+        android:layout_marginTop="8dp"
+        android:text="Вы можете покурить через..."
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_next_smoke"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Кнопка для записи перекура -->
     <Button
         android:id="@+id/btn_break"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Перекур" />
+        android:layout_marginTop="16dp"
+        android:text="Перекур"
+        app:layout_constraintTop_toBottomOf="@id/tv_timer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
