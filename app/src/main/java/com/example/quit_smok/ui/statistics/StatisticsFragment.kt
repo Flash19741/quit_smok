@@ -65,9 +65,29 @@ class StatisticsFragment : Fragment() {
         binding.tvInitialInterval.text = "Сначала интервал между перекурами был $initialInterval минут"
 
         // 8. Вчера интервал между перекурами был (значение интервал между перекурами вчера) минут
-        // Предполагаем, что интервал вчера был таким же, как текущий, если не отслеживается изменение
-        val yesterdayInterval = mainActivity.getCurrentInterval() // Или другой способ подсчёта, если есть
+        val yesterdayInterval = mainActivity.getCurrentInterval() // Предполагаем текущий интервал
         binding.tvYesterdayInterval.text = "Вчера интервал между перекурами был $yesterdayInterval минут"
+
+        // 9. Сэкономили за всё время
+        val totalSavings = calculateTotalSavings()
+        binding.tvTotalSavings.text = "Сэкономили за всё время: ${String.format(Locale.US, "%.2f", totalSavings)}"
+    }
+
+    private fun calculateTotalSavings(): Double {
+        val dailySmokes: Map<String, Int> = mainActivity.getDailySmokes()
+
+        val initialCigsPerDay = mainActivity.getInitialCigsPerDay()
+        val cigPrice = mainActivity.getCigarettePrice()
+        var totalSavings = 0.0
+
+        for ((dateStr, smokedCigs) in dailySmokes) {
+            val expectedSpend = initialCigsPerDay * cigPrice // Ожидаемые траты за день по настройкам
+            val actualSpend = smokedCigs * cigPrice // Фактические траты
+            val dailySavings = expectedSpend - actualSpend // Экономия за день
+            totalSavings += dailySavings
+        }
+
+        return totalSavings
     }
 
     override fun onDestroyView() {

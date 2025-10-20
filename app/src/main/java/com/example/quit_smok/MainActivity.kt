@@ -154,4 +154,13 @@ class MainActivity : AppCompatActivity() {
 
         return dailySmokes[date.format(DateTimeFormatter.ISO_DATE)] ?: 0
     }
+
+    fun getDailySmokes(): Map<String, Int> {
+        val gson = Gson()
+        val type = object : TypeToken<Map<String, Int>>() {}.type
+        return gson.fromJson(
+            prefs.getString("daily_smokes", "{}"),
+            type
+        ) ?: mapOf()
+    }
 }

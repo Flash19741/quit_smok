@@ -70,6 +70,14 @@
             android:id="@+id/tv_yesterday_interval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 9. Сэкономили за всё время -->
+        <TextView
+            android:id="@+id/tv_total_savings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="18sp" />
 
     </LinearLayout>
