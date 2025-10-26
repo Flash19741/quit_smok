@@ -3,52 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"> <!-- Начальный цвет -->
+    android:background="@android:color/white">
 
-    <!-- Текст для времени последнего перекура -->
-    <TextView
-        android:id="@+id/tv_last_smoke"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Время последнего перекура: --"
-        android:textSize="18sp"
+    <!-- Круговой прогресс-бар -->
+    <ProgressBar
+        android:id="@+id/progress_circle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/circular_progress"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_inside_circle" />
 
-    <!-- Текст для времени следующего перекура -->
+    <!-- Текст внутри круга -->
     <TextView
-        android:id="@+id/tv_next_smoke"
+        android:id="@+id/tv_inside_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Время следующего перекура: --"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_last_smoke"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="До перекура"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@id/progress_circle"
+        app:layout_constraintBottom_toBottomOf="@id/progress_circle"
+        app:layout_constraintStart_toStartOf="@id/progress_circle"
+        app:layout_constraintEnd_toEndOf="@id/progress_circle" />
 
-    <!-- Существующий текст "Вы можете покурить через..." -->
-    <TextView
-        android:id="@+id/tv_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Вы можете покурить через..."
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_next_smoke"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Кнопка для записи перекура -->
+    <!-- Кнопка перекура -->
     <Button
         android:id="@+id/btn_break"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Перекур"
-        app:layout_constraintTop_toBottomOf="@id/tv_timer"
+        android:text="Курить"
+        android:backgroundTint="@color/light_green"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/progress_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Иконка батарейки экономии -->
+    <ImageView
+        android:id="@+id/iv_battery"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:src="@drawable/battery_icon"
+    app:layout_constraintTop_toBottomOf="@id/btn_break"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Текст под батарейкой (+9% 85%) -->
+    <TextView
+        android:id="@+id/tv_savings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+9% 85%"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/iv_battery"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Мотивационный текст -->
+    <TextView
+        android:id="@+id/tv_motivation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Отлично, Вы на пути к свободе!\nВы уже не курили 2 часа 30 минут"
+        android:textSize="18sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_savings"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -9,76 +9,66 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 1. Вы выкуривали (значение из настроек) сигарет в сутки -->
+        <!-- График сигарет -->
         <TextView
-            android:id="@+id/tv_initial_cigs_per_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+            android:text="Печатающие выи клейпит:" />  <!-- Из примера, возможно, "Сигареты по дням" -->
 
-        <!-- 2. Вчера вы выкурили (значение сколько сигарет скурил вчера) сигарет -->
-        <TextView
-            android:id="@+id/tv_yesterday_cigs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_cigs"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
 
-        <!-- 3. Сегодня вы выкурили (значение сколько сигарет скурил сегодня) сигарет -->
-        <TextView
-            android:id="@+id/tv_today_cigs"
-            android:layout_width="wrap_content"
+        <!-- Медали -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <!-- 4. Вы тратили (значение траты на сигареты при запуске приложения) -->
-        <TextView
-            android:id="@+id/tv_initial_spend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+            <ImageView
+                android:id="@+id/iv_medal1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/medal_gold" />  <!-- Из поиска -->
 
-        <!-- 5. Вчера вы потратили (значение траты на сигареты вчера) -->
-        <TextView
-            android:id="@+id/tv_yesterday_spend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+            <ImageView
+                android:id="@+id/iv_medal2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/medal_silver" />
 
-        <!-- 6. Сегодня вы потратили (значение траты на сигареты сегодня) -->
-        <TextView
-            android:id="@+id/tv_today_spend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+            <ImageView
+                android:id="@+id/iv_medal3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/medal_bronze" />
 
-        <!-- 7. Сначала интервал между перекурами был (значение интервал между перекурами при запуске приложения) минут -->
-        <TextView
-            android:id="@+id/tv_initial_interval"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+        </LinearLayout>
 
-        <!-- 8. Вчера интервал между перекурами был (значение интервал между перекурами вчера) минут -->
+        <!-- График загрязнения -->
         <TextView
-            android:id="@+id/tv_yesterday_interval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp" />
+            android:text="Полкозскость Ва3: Бвиести:" />  <!-- "Загрязнение" или подобное -->
 
-        <!-- 9. Сэкономили за всё время -->
-        <TextView
-            android:id="@+id/tv_total_savings"
-            android:layout_width="wrap_content"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_pollution"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <!-- Баннер не курили -->
+        <Button
+            android:id="@+id/btn_not_smoked"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:text="Мы не курили 1 День 8 часов 35 минут"
+            android:backgroundTint="@color/light_green"
+            android:textColor="@android:color/white"
+            android:enabled="false" />  <!-- Не кликабельный, как баннер -->
+
+        <!-- Остальные TextView из текущего, если нужно -->
 
     </LinearLayout>
 </ScrollView>

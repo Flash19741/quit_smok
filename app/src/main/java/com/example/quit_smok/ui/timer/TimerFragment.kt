@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,8 @@ import androidx.fragment.app.Fragment
 import com.example.quit_smok.MainActivity
 import com.example.quit_smok.R
 import com.example.quit_smok.databinding.FragmentTimerBinding
-import java.time.Instant
-import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import java.time.Duration
 
 class TimerFragment : Fragment() {
 
@@ -63,39 +59,36 @@ class TimerFragment : Fragment() {
         val lastSmokeTimestamp = mainActivity.getLastSmokeTimestamp()
         val currentInterval = mainActivity.getCurrentInterval() * 60 * 1000L // Интервал в миллисекундах
         val now = System.currentTimeMillis()
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
-        // Форматируем время последнего перекура
-        if (lastSmokeTimestamp > 0) {
-            val lastSmokeTime = LocalDateTime.ofInstant(
-                Instant.ofEpochMilli(lastSmokeTimestamp),
-                ZoneId.systemDefault()
-            )
-            binding.tvLastSmoke.text = "Время последнего перекура: ${lastSmokeTime.format(formatter)}"
-        } else {
-            binding.tvLastSmoke.text = "Время последнего перекура: --"
-        }
+        // Рассчитываем оставшееся время
+        val remainingMillis = calculateRemainingMillis()
+        val intervalMillis = currentInterval
+        val progress = if (intervalMillis > 0) ((intervalMillis - remainingMillis).toFloat() / intervalMillis * 100).toInt() else 0
+        binding.progressCircle.progress = progress
 
-        // Вычисляем и форматируем время следующего перекура
-        val nextSmokeTimestamp = lastSmokeTimestamp + currentInterval
-        if (lastSmokeTimestamp > 0 && nextSmokeTimestamp > now) {
-            val nextSmokeTime = LocalDateTime.ofInstant(
-                Instant.ofEpochMilli(nextSmokeTimestamp),
-                ZoneId.systemDefault()
-            )
-            binding.tvNextSmoke.text = "Время следующего перекура: ${nextSmokeTime.format(formatter)}"
+        // Мотивация
+        val timeNotSmoked = now - lastSmokeTimestamp
+        val duration = Duration.ofMillis(timeNotSmoked)
+        val hours = duration.toHours()
+        val mins = duration.toMinutes() % 60
+        binding.tvMotivation.text = "Отлично, Вы на пути к свободе!\nВы уже не курили $hours часа $mins минут"
 
-            // Вычисляем оставшееся время до следующего перекура
-            val timeLeftMs = nextSmokeTimestamp - now
-            val minutesLeft = (timeLeftMs / 1000 / 60).toInt()
-            val secondsLeft = (timeLeftMs / 1000 % 60).toInt()
-            binding.tvTimer.text = "Вы можете покурить через $minutesLeft мин $secondsLeft сек"
+        // Экономия
+        val days = if (timeNotSmoked > 0) (timeNotSmoked / (24 * 60 * 60 * 1000)).toInt() + 1 else 1
+        val totalSavings = mainActivity.calculateTotalSavings()
+        val expectedTotal = (mainActivity.getInitialCigsPerDay().toDouble() * mainActivity.getCigarettePrice() * days.toDouble())
+        val savingsPercent = if (expectedTotal > 0) (totalSavings / expectedTotal) * 100 else 0.0
+        binding.tvSavings.text = "+${savingsPercent.toInt()}% ${ (100 - savingsPercent.toInt()) }%"
+
+        if (remainingMillis > 0) {
+            val minutes = (remainingMillis / 60000).toInt()
+            val seconds = ((remainingMillis % 60000) / 1000).toInt()
+            binding.tvInsideCircle.text = "$minutes мин\n$seconds сек"
 
             // Светло-красный фон (нельзя курить)
             binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_red))
         } else {
-            binding.tvNextSmoke.text = "Время следующего перекура: --"
-            binding.tvTimer.text = "Вы можете покурить сейчас"
+            binding.tvInsideCircle.text = "Можно курить\nсейчас"
 
             // Светло-зелёный фон (можно курить)
             binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.light_green))
@@ -104,7 +97,7 @@ class TimerFragment : Fragment() {
 
     private fun handleBreak() {
         val nowTime = LocalTime.now()
-        if (!(activity as MainActivity).isWithinAwakeTime(nowTime)) {
+        if (!mainActivity.isWithinAwakeTime(nowTime)) {
             showOutsideAwakeDialog()
         } else {
             checkAndHandleSmoke()
@@ -143,17 +136,17 @@ class TimerFragment : Fragment() {
 
     private fun performSmoke() {
         val now = System.currentTimeMillis()
-        (activity as MainActivity).setLastSmokeTimestamp(now)
-        (activity as MainActivity).recordSmoke()
-        val newInterval = (activity as MainActivity).getCurrentInterval() + (activity as MainActivity).getIncreaseInterval()
-        (activity as MainActivity).setCurrentInterval(newInterval)
+        mainActivity.setLastSmokeTimestamp(now)
+        mainActivity.recordSmoke()
+        val newInterval = mainActivity.getCurrentInterval() + mainActivity.getIncreaseInterval()
+        mainActivity.setCurrentInterval(newInterval)
         updateTimer()
     }
 
     private fun calculateRemainingMillis(): Long {
-        val last = (activity as MainActivity).getLastSmokeTimestamp()
+        val last = mainActivity.getLastSmokeTimestamp()
         if (last == 0L) return 0L
-        val intervalMillis = (activity as MainActivity).getCurrentInterval() * 60L * 1000L
+        val intervalMillis = mainActivity.getCurrentInterval().toLong() * 60L * 1000L
         val end = last + intervalMillis
         return end - System.currentTimeMillis()
     }
