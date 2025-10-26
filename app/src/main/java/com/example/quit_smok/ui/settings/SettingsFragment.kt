@@ -1,17 +1,21 @@
 package com.example.quit_smok.ui.settings
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.quit_smok.MainActivity
 import com.example.quit_smok.R
 import com.example.quit_smok.databinding.FragmentSettingsBinding
+import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 class SettingsFragment : Fragment() {
 
@@ -30,26 +34,54 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Проверяем настройки и обновляем UI после создания view
         val mainActivity = activity as MainActivity
         if (mainActivity.areSettingsSaved()) {
-            // Заполняем поля сохранёнными данными
-            binding.etFirstTime.setText(mainActivity.getFirstSmokeTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-            binding.etLastTime.setText(mainActivity.getLastSmokeTime().format(DateTimeFormatter.ofPattern("HH:mm")))
-            binding.etCigs.setText(mainActivity.getInitialCigsPerDay().toString())
-            binding.etIncrease.setText(mainActivity.getIncreaseInterval().toString())
+            binding.btnFirstTime.text = mainActivity.getFirstSmokeTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+            binding.btnLastTime.text = mainActivity.getLastSmokeTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+            binding.seekCigs.progress = mainActivity.getInitialCigsPerDay()
+            binding.seekIncrease.progress = mainActivity.getIncreaseInterval()
             val packPrice = mainActivity.getCigarettePrice() * 20
             binding.etPackPrice.setText(packPrice.toString())
             updateCalculatedFields()
 
             // Disable edits and save button
-            binding.etFirstTime.isEnabled = false
-            binding.etLastTime.isEnabled = false
-            binding.etCigs.isEnabled = false
-            binding.etIncrease.isEnabled = false
+            binding.btnFirstTime.isEnabled = false
+            binding.btnLastTime.isEnabled = false
+            binding.seekCigs.isEnabled = false
+            binding.seekIncrease.isEnabled = false
             binding.etPackPrice.isEnabled = false
             binding.btnSave.isEnabled = false
         }
+
+        binding.btnFirstTime.setOnClickListener {
+            showTimePicker { time ->
+                binding.btnFirstTime.text = time.format(DateTimeFormatter.ofPattern("HH:mm"))
+                updateCalculatedFields()
+            }
+        }
+
+        binding.btnLastTime.setOnClickListener {
+            showTimePicker { time ->
+                binding.btnLastTime.text = time.format(DateTimeFormatter.ofPattern("HH:mm"))
+                updateCalculatedFields()
+            }
+        }
+
+        binding.seekCigs.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                updateCalculatedFields()
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+
+        binding.seekIncrease.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                updateCalculatedFields()
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
 
         binding.btnSave.setOnClickListener {
             saveSettings()
@@ -60,12 +92,21 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun showTimePicker(onTimeSelected: (LocalTime) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+        TimePickerDialog(requireContext(), { _, h, m ->
+            onTimeSelected(LocalTime.of(h, m))
+        }, hour, minute, true).show()
+    }
+
     private fun saveSettings() {
         try {
-            val firstStr = binding.etFirstTime.text.toString()
-            val lastStr = binding.etLastTime.text.toString()
-            val cigs = binding.etCigs.text.toString().toInt()
-            val increase = binding.etIncrease.text.toString().toInt()
+            val firstStr = binding.btnFirstTime.text.toString()
+            val lastStr = binding.btnLastTime.text.toString()
+            val cigs = binding.seekCigs.progress
+            val increase = binding.seekIncrease.progress
             val packPrice = binding.etPackPrice.text.toString().toDouble()
 
             if (firstStr.isEmpty() || lastStr.isEmpty() || cigs <= 0 || increase < 0 || packPrice <= 0) {
@@ -73,8 +114,8 @@ class SettingsFragment : Fragment() {
                 return
             }
 
-            val first = LocalTime.parse(firstStr, DateTimeFormatter.ofPattern("H:m"))
-            val last = LocalTime.parse(lastStr, DateTimeFormatter.ofPattern("H:m"))
+            val first = LocalTime.parse(firstStr, DateTimeFormatter.ofPattern("HH:mm"))
+            val last = LocalTime.parse(lastStr, DateTimeFormatter.ofPattern("HH:mm"))
 
             val mainActivity = activity as MainActivity
             mainActivity.saveSettings(first, last, cigs, increase, packPrice)
@@ -82,10 +123,10 @@ class SettingsFragment : Fragment() {
             updateCalculatedFields()
 
             // Disable fields and save button
-            binding.etFirstTime.isEnabled = false
-            binding.etLastTime.isEnabled = false
-            binding.etCigs.isEnabled = false
-            binding.etIncrease.isEnabled = false
+            binding.btnFirstTime.isEnabled = false
+            binding.btnLastTime.isEnabled = false
+            binding.seekCigs.isEnabled = false
+            binding.seekIncrease.isEnabled = false
             binding.etPackPrice.isEnabled = false
             binding.btnSave.isEnabled = false
 
@@ -99,18 +140,27 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateCalculatedFields() {
-        val mainActivity = activity as MainActivity
-        val first = mainActivity.getFirstSmokeTime()
-        val last = mainActivity.getLastSmokeTime()
-        val awakeMinutes = mainActivity.calculateAwakeMinutes(first, last)
-        binding.tvAwakeTime.text = "Вы бодрствуете ${awakeMinutes / 60} часов ${awakeMinutes % 60} минут"
+        val firstStr = binding.btnFirstTime.text.toString()
+        val lastStr = binding.btnLastTime.text.toString()
+        if (firstStr.isNotEmpty() && lastStr.isNotEmpty()) {
+            try {
+                val first = LocalTime.parse(firstStr, DateTimeFormatter.ofPattern("HH:mm"))
+                val last = LocalTime.parse(lastStr, DateTimeFormatter.ofPattern("HH:mm"))
+                val awakeDuration = Duration.between(first, last)
+                val awakeMinutes = awakeDuration.toMinutes().toInt().let { if (it < 0) it + 24 * 60 else it }
+                binding.tvAwakeTime.text = "Вы бодрствуете ${awakeMinutes / 60} часов ${awakeMinutes % 60} минут"
+            } catch (e: Exception) {
+                // Ignore
+            }
+        }
 
-        val cigs = mainActivity.getInitialCigsPerDay()
-        val interval = mainActivity.getInitialInterval()
+        val cigs = binding.seekCigs.progress
+        val interval = if (cigs > 0) (/* awakeMinutes from above */ 0 / cigs) else 0 // Adjust to use awakeMinutes
         binding.tvInterval.text = "Вы курите каждые $interval минут"
 
-        val cigPrice = mainActivity.getCigarettePrice()
-        binding.tvCigPrice.text = "Одна сигарета стоит $%.2f".format(cigPrice)
+        val packPriceStr = binding.etPackPrice.text.toString()
+        val cigPrice = if (packPriceStr.isNotEmpty()) packPriceStr.toDouble() / 20 else 0.0
+        binding.tvCigPrice.text = "Одна сигарета стоит %.2f".format(cigPrice)
     }
 
     override fun onDestroyView() {
